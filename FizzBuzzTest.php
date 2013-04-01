@@ -6,8 +6,8 @@ class FizzBuzz
     public function __construct()
     {
         $this->words = array(
-            3 => WordsMonoid::single('fizz'),
-            5 => WordsMonoid::single('buzz'),
+            3 => Words::single('fizz'),
+            5 => Words::single('buzz'),
         );
     }
 
@@ -82,7 +82,10 @@ class Maybe
     }
 }
 
-class WordsMonoid
+/**
+ * A Monoid over ('', .)
+ */
+class Words
 {
     private $words = array();
 
