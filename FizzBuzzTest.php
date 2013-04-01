@@ -15,12 +15,10 @@ class FizzBuzz
 
     public function say($number)
     {
-        $result = Maybe::nothing();
         $words = array_map(function($divisor) use ($number) {
             return $this->wordFor($number, $divisor);
         }, $this->divisors);
-        $result = reduce_objects($words, 'append');
-        return $result->getOr($number);
+        return reduce_objects($words, 'append')->getOr($number);
     }
 
     private function wordFor($number, $divisor)
