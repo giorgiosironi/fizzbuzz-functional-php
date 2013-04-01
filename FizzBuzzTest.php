@@ -16,8 +16,7 @@ class FizzBuzz
     {
         $result = Maybe::nothing();
         foreach ($this->words as $divisor => $word) {
-            $word = $this->wordFor($number, $divisor);
-            $result = $result->append($word);
+            $result = $result->append($this->wordFor($number, $divisor));
         }
         return $result->getOr($number);
     }
