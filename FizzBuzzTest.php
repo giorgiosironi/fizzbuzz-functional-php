@@ -30,7 +30,15 @@ class FizzBuzz
     }
 }
 
-class Maybe
+interface Monoid
+{
+    /**
+     * @return Monoid
+     */
+    public function append($another);
+}
+
+class Maybe implements Monoid
 {
     public static function just($value)
     {
@@ -70,7 +78,7 @@ class Maybe
         return (string) $this->value;
     }
 
-    public function append(Maybe $another)
+    public function append(/*Maybe*/ $another)
     {
         if ($this->value === null) {
             return $another;
@@ -85,7 +93,7 @@ class Maybe
 /**
  * A Monoid over ('', .)
  */
-class Words
+class Words implements Monoid
 {
     private $words = array();
 
@@ -104,9 +112,9 @@ class Words
         $this->words = $singleWord;
     }
 
-    public function append($word)
+    public function append(/*Words*/ $words)
     {
-        return new self(array_merge($this->words, $word->words));
+        return new self(array_merge($this->words, $words->words));
     }
 
     public function __toString()
