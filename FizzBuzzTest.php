@@ -12,15 +12,20 @@ class FizzBuzz
 
 class FizzBuzzTest extends PHPUnit_Framework_TestCase
 {
-    public function test1Is1()
+    public static function numberToResult()
     {
-        $fizzBuzz = new FizzBuzz();
-        $this->assertEquals(1, $fizzBuzz->say(1));
+        return array(
+            array(1, 1),
+            array(3, 'fizz'),
+        );
     }
 
-    public function test3IsFizz()
+    /**
+     * @dataProvider numberToResult
+     */
+    public function testNumberIsMappedToResult($number, $result)
     {
         $fizzBuzz = new FizzBuzz();
-        $this->assertEquals('fizz', $fizzBuzz->say(3));
+        $this->assertEquals($result, $fizzBuzz->say($number));
     }
 }
