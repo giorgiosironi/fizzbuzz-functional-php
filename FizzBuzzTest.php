@@ -10,15 +10,15 @@ class FizzBuzz
             5 => Words::single('buzz'),
             7 => Words::single('bang'),
         );
+        $this->divisors = array_keys($this->words);
     }
 
     public function say($number)
     {
         $result = Maybe::nothing();
-        $words = array();
-        foreach ($this->words as $divisor => $word) {
-            $words[] = $this->wordFor($number, $divisor);
-        }
+        $words = array_map(function($divisor) use ($number) {
+            return $this->wordFor($number, $divisor);
+        }, $this->divisors);
         $result = reduce_objects($words, 'append');
         return $result->getOr($number);
     }
