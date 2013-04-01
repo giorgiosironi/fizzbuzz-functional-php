@@ -3,11 +3,15 @@ class FizzBuzz
 {
     public function say($number)
     {
+        $result = '';
         if ($number % 3 == 0) {
-            return 'fizz';
+            $result .= 'fizz';
         }
         if ($number % 5 == 0) {
-            return 'buzz';
+            $result .= 'buzz';
+        }
+        if ($result) {
+            return $result;
         }
         return $number;
     }
@@ -23,6 +27,7 @@ class FizzBuzzTest extends PHPUnit_Framework_TestCase
             array(5, 'buzz'),
             array(6, 'fizz'),
             array(10, 'buzz'),
+            array(15, 'fizzbuzz'),
         );
     }
 
