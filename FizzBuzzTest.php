@@ -6,17 +6,17 @@ class FizzBuzz
     public function __construct()
     {
         $this->words = array(
-            3 => 'fizz',
-            5 => 'buzz',
+            3 => WordsMonoid::single('fizz'),
+            5 => WordsMonoid::single('buzz'),
         );
     }
 
     public function say($number)
     {
-        $result = new Result($number);
+        $result = WordsMonoid::identity();
         foreach ($this->words as $divisor => $word) {
             if ($this->divisible($number, $divisor)) {
-                $result->addWord($word);
+                $result = $result->append($word);
             }
         }
         return Maybe::from($result, $number);
@@ -49,19 +49,28 @@ class Maybe
     }
 }
 
-class Result
+class WordsMonoid
 {
-    private $result;
     private $words = array();
 
-    public function __construct($number)
+    public static function identity()
     {
-        $this->number = $number;
+        return new self(array());
     }
 
-    public function addWord($word)
+    public function single($word)
     {
-        $this->words[] = $word;
+        return new self(array($word));
+    }
+
+    private function __construct($singleWord)
+    {
+        $this->words = $singleWord;
+    }
+
+    public function append(WordsMonoid $word)
+    {
+        return new self(array_merge($this->words, $word->words));
     }
 
     public function __toString()
