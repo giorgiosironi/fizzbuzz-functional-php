@@ -16,10 +16,17 @@ class FizzBuzz
         $result = WordsMonoid::identity();
         foreach ($this->words as $divisor => $word) {
             if ($this->divisible($number, $divisor)) {
+                // use Maybe for these values
+                // but first check its implementation is good
                 $result = $result->append($word);
             }
         }
-        return Maybe::from($result, $number);
+        if (((string) $result) != '') {
+            $result = Maybe::just($result);
+        } else {
+            $result = Maybe::nothing();
+        }
+        return $result->getOr($number);
     }
 
     private function divisible($number, $divisor)
@@ -30,13 +37,25 @@ class FizzBuzz
 
 class Maybe
 {
-    public static function from($just, $default)
+    public static function just($value)
     {
-        if ((string) $just) {
-            return new self($just);
-        }
-        return new self($default);
+        return new self($value);
     }
+
+    public static function nothing()
+    {
+        return new self(null);
+    }
+
+    public function getOr($default)
+    {
+        if ($this->value !== null) {
+            return $this->value;
+        }
+        return $default;
+    }
+
+    private $value;
 
     private function __construct($value)
     {
