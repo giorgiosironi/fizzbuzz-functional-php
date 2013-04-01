@@ -19,9 +19,7 @@ class FizzBuzz
         foreach ($this->words as $divisor => $word) {
             $words[] = $this->wordFor($number, $divisor);
         }
-        $result = array_reduce($words, function($one, $two) {
-            return $one->append($two);
-        }, Maybe::nothing());
+        $result = reduce_objects($words, 'append');
         return $result->getOr($number);
     }
 
@@ -40,6 +38,13 @@ interface Monoid
      * @return Monoid
      */
     public function append($another);
+}
+
+function reduce_objects($array, $methodName)
+{
+    return array_reduce($array, function($one, $two) use ($methodName) {
+        return $one->$methodName($two);
+    }, Maybe::nothing());
 }
 
 class Maybe implements Monoid
