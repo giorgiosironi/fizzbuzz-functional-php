@@ -8,6 +8,7 @@ class FizzBuzz
         $this->words = array(
             3 => Words::single('fizz'),
             5 => Words::single('buzz'),
+            7 => Words::single('bang'),
         );
     }
 
@@ -134,6 +135,7 @@ class FizzBuzzTest extends PHPUnit_Framework_TestCase
             array(6, 'fizz'),
             array(10, 'buzz'),
             array(15, 'fizzbuzz'),
+            array(3*5*7, 'fizzbuzzbang'),
         );
     }
 
