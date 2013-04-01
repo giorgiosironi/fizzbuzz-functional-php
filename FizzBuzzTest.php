@@ -57,14 +57,6 @@ class Maybe implements Monoid
         return new self(null);
     }
 
-    public static function wrap($value)
-    {
-        if ((string) $value) {
-            return self::just($value);
-        }
-        return self::nothing();
-    }
-
     public function getOr($default)
     {
         if ($this->value !== null) {
@@ -93,7 +85,7 @@ class Maybe implements Monoid
         if ($another->value === null) {
             return $this;
         }
-        return Maybe::wrap($this->value->append($another->value));
+        return Maybe::just($this->value->append($another->value));
     }
 }
 
