@@ -19,12 +19,33 @@ class FizzBuzz
                 $result->addWord($word);
             }
         }
-        return $result;
+        return Maybe::from($result, $number);
     }
 
     private function divisible($number, $divisor)
     {
         return $number % $divisor == 0;
+    }
+}
+
+class Maybe
+{
+    public static function from($just, $default)
+    {
+        if ((string) $just) {
+            return new self($just);
+        }
+        return new self($default);
+    }
+
+    private function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
     }
 }
 
@@ -48,7 +69,7 @@ class Result
         if ($this->words) {
             return implode('', $this->words);
         }
-        return (string) $this->number;
+        return '';
     }
 }
 
