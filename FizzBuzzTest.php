@@ -3,7 +3,7 @@ class FizzBuzz
 {
     public function say($number)
     {
-        if ($number == 3) {
+        if ($number % 3 == 0) {
             return 'fizz';
         }
         return $number;
@@ -17,6 +17,7 @@ class FizzBuzzTest extends PHPUnit_Framework_TestCase
         return array(
             array(1, 1),
             array(3, 'fizz'),
+            array(6, 'fizz'),
         );
     }
 
