@@ -3,22 +3,43 @@ class FizzBuzz
 {
     public function say($number)
     {
-        $result = '';
+        $result = new Result($number);
         if ($this->divisible($number, 3)) {
-            $result .= 'fizz';
+            $result->addWord('fizz');
         }
         if ($this->divisible($number, 5)) {
-            $result .= 'buzz';
+            $result->addWord('buzz');
         }
-        if ($result) {
-            return $result;
-        }
-        return $number;
+        return $result->__toString();
     }
 
     private function divisible($number, $divisor)
     {
         return $number % $divisor == 0;
+    }
+}
+
+class Result
+{
+    private $result;
+    private $words = array();
+
+    public function __construct($number)
+    {
+        $this->number = $number;
+    }
+
+    public function addWord($word)
+    {
+        $this->words[] = $word;
+    }
+
+    public function __toString()
+    {
+        if ($this->words) {
+            return implode('', $this->words);
+        }
+        return $this->number;
     }
 }
 
