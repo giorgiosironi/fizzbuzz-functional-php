@@ -10,7 +10,7 @@ class FizzBuzz
         if ($this->divisible($number, 5)) {
             $result->addWord('buzz');
         }
-        return $result->__toString();
+        return $result;
     }
 
     private function divisible($number, $divisor)
@@ -39,7 +39,7 @@ class Result
         if ($this->words) {
             return implode('', $this->words);
         }
-        return $this->number;
+        return (string) $this->number;
     }
 }
 
@@ -48,7 +48,7 @@ class FizzBuzzTest extends PHPUnit_Framework_TestCase
     public static function numberToResult()
     {
         return array(
-            array(1, 1),
+            array(1, '1'),
             array(3, 'fizz'),
             array(5, 'buzz'),
             array(6, 'fizz'),
