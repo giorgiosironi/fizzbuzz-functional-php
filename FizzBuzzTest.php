@@ -15,9 +15,13 @@ class FizzBuzz
     public function say($number)
     {
         $result = Maybe::nothing();
+        $words = array();
         foreach ($this->words as $divisor => $word) {
-            $result = $result->append($this->wordFor($number, $divisor));
+            $words[] = $this->wordFor($number, $divisor);
         }
+        $result = array_reduce($words, function($one, $two) {
+            return $one->append($two);
+        }, Maybe::nothing());
         return $result->getOr($number);
     }
 
