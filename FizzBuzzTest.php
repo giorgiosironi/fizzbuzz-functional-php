@@ -13,25 +13,22 @@ class FizzBuzz
 
     public function say($number)
     {
-        $result = WordsMonoid::identity();
+        $result = Maybe::wrap(WordsMonoid::identity());
         foreach ($this->words as $divisor => $word) {
-            if ($this->divisible($number, $divisor)) {
                 // use Maybe for these values
                 // but first check its implementation is good
-                $result = $result->append($word);
-            }
-        }
-        if (((string) $result) != '') {
-            $result = Maybe::just($result);
-        } else {
-            $result = Maybe::nothing();
+            $word = $this->divisible($number, $divisor, $word);
+            $result = $result->append($word);
         }
         return $result->getOr($number);
     }
 
-    private function divisible($number, $divisor)
+    private function divisible($number, $divisor, $word)
     {
-        return $number % $divisor == 0;
+        if ($number % $divisor == 0) {
+            return Maybe::just($word);
+        }
+        return Maybe::nothing();
     }
 }
 
@@ -45,6 +42,14 @@ class Maybe
     public static function nothing()
     {
         return new self(null);
+    }
+
+    public static function wrap($value)
+    {
+        if ((string) $value) {
+            return self::just($value);
+        }
+        return self::nothing();
     }
 
     public function getOr($default)
@@ -65,6 +70,17 @@ class Maybe
     public function __toString()
     {
         return (string) $this->value;
+    }
+
+    public function append(Maybe $another)
+    {
+        if ($this->value === null) {
+            return $another;
+        }
+        if ($another->value === null) {
+            return $this;
+        }
+        return Maybe::wrap($this->value->append($another->value));
     }
 }
 
@@ -87,17 +103,14 @@ class WordsMonoid
         $this->words = $singleWord;
     }
 
-    public function append(WordsMonoid $word)
+    public function append($word)
     {
         return new self(array_merge($this->words, $word->words));
     }
 
     public function __toString()
     {
-        if ($this->words) {
-            return implode('', $this->words);
-        }
-        return '';
+        return implode('', $this->words);
     }
 }
 
