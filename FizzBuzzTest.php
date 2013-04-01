@@ -13,20 +13,18 @@ class FizzBuzz
 
     public function say($number)
     {
-        $result = Maybe::wrap(WordsMonoid::identity());
+        $result = Maybe::nothing();
         foreach ($this->words as $divisor => $word) {
-                // use Maybe for these values
-                // but first check its implementation is good
-            $word = $this->divisible($number, $divisor, $word);
+            $word = $this->wordFor($number, $divisor);
             $result = $result->append($word);
         }
         return $result->getOr($number);
     }
 
-    private function divisible($number, $divisor, $word)
+    private function wordFor($number, $divisor)
     {
         if ($number % $divisor == 0) {
-            return Maybe::just($word);
+            return Maybe::just($this->words[$divisor]);
         }
         return Maybe::nothing();
     }
