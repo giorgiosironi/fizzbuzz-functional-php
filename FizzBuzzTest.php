@@ -1,14 +1,23 @@
 <?php
 class FizzBuzz
 {
+    private $words;
+
+    public function __construct()
+    {
+        $this->words = array(
+            3 => 'fizz',
+            5 => 'buzz',
+        );
+    }
+
     public function say($number)
     {
         $result = '';
-        if ($this->divisible($number, 3)) {
-            $result .= 'fizz';
-        }
-        if ($this->divisible($number, 5)) {
-            $result .= 'buzz';
+        foreach ($this->words as $divisor => $word) {
+            if ($this->divisible($number, $divisor)) {
+                $result .= $word;
+            }
         }
         if ($result) {
             return $result;
