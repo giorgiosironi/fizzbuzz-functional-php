@@ -4,16 +4,21 @@ class FizzBuzz
     public function say($number)
     {
         $result = '';
-        if ($number % 3 == 0) {
+        if ($this->divisible($number, 3)) {
             $result .= 'fizz';
         }
-        if ($number % 5 == 0) {
+        if ($this->divisible($number, 5)) {
             $result .= 'buzz';
         }
         if ($result) {
             return $result;
         }
         return $number;
+    }
+
+    private function divisible($number, $divisor)
+    {
+        return $number % $divisor == 0;
     }
 }
 
